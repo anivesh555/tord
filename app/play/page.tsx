@@ -169,7 +169,7 @@ export default function Home() {
                 })}
 
                 {/* Names */}
-                {players.map((p, i) => {
+                {players.map((p: any, i: any) => {
                     const angleDeg = (i / players.length) * 360;
                     const radius = 120;
                     const x = radius * Math.cos((angleDeg * Math.PI) / 180);
