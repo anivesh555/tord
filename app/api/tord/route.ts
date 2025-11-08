@@ -23,9 +23,10 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
     try {
         await connectDB();
-        const filter = {}
+        const filter: any = {}
         //  need to have in redis
-        const query = req.query?.type
+        const { searchParams } = new URL(req.url);
+        const query = searchParams.get("type");
         if (query) filter.type = query
         const allTords = await Tord.find(filter).select(["questionId", 'type']);
         let min = 0
