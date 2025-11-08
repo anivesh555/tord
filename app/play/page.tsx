@@ -192,7 +192,7 @@ export default function Home() {
                 })}
 
                 {/* Names */}
-                {players.map((p: any, i: any) => {
+                {/* {players.map((p: any, i: any) => {
                     const angleDeg = (i / players.length) * 360;
                     const radius = 120;
                     const x = radius * Math.cos((angleDeg * Math.PI) / 180);
@@ -206,6 +206,27 @@ export default function Home() {
                             }}
                         >
                             <div>Player {i + 1}</div>
+                            <div>{p.name}</div>
+                        </div>
+                    );
+                })} */}
+                {players.map((p: any, i: number) => {
+                    const angleDeg = (i / players.length) * 360;
+                    const radius = 120; // slightly outside the line
+                    const x = radius * Math.cos((angleDeg * Math.PI) / 180);
+                    const y = radius * Math.sin((angleDeg * Math.PI) / 180);
+
+                    return (
+                        <div
+                            key={i}
+                            className="absolute text-sm font-medium text-gray-700 text-left"
+                            style={{
+                                left: `calc(50% + ${x}px)`,
+                                top: `calc(50% + ${y}px)`,
+                                transform: `translate(-50%, -50%)`,
+                            }}
+                        >
+                            {/* <div>Player {i + 1}</div> */}
                             <div>{p.name}</div>
                         </div>
                     );
