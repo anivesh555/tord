@@ -21,7 +21,7 @@ export default function TordPopup({ onClose }: TordPopupProps) {
             if (!res.ok) throw new Error("Failed to get question");
 
             const data = await res.json();
-            console.log(data, "=======data");
+            // console.log(data, "=======data");
 
             setQuestion(data.data[0].question);
             setQuestionType(data.data[0].type);

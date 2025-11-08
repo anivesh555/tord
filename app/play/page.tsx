@@ -44,12 +44,18 @@ export default function Home() {
     useEffect(() => {
         // Run only in browser
         let stored;
+        let gametype;
         if (typeof window !== "undefined") {
 
 
             stored = localStorage.getItem("players");
+            gametype = localStorage.getItem("gametype");
+
+
         }
         if (stored) setPlayers(JSON.parse(stored));
+        // console.log(gametype, "==typoew------")
+        if (gametype) setType(gametype)
     }, []);
 
     // ✅ Update localStorage whenever players change
@@ -60,7 +66,7 @@ export default function Home() {
             localStorage.setItem("players", JSON.stringify(players));
         }
     }, [players]);
-    console.log(players)
+    // console.log(players)
     const addName = () => {
         if (newName.trim() === "") return;
         const updated = [...players, { player: players.length + 1, name: newName.trim() }];
@@ -82,7 +88,7 @@ export default function Home() {
         const newAngle = angle + randomSpin;
         setAngle(newAngle);
 
-        console.log(newAngle, "new angle <<====", randomSpin)
+        // console.log(newAngle, "new angle <<====", randomSpin)
 
         // Determine winner after spin completes
         setTimeout(() => {
@@ -149,7 +155,7 @@ export default function Home() {
                 </button>
             </div>
 
-            <div className="mb-6 flex gap-3 text-black">
+            <div className="mb-6 flex gap-3 text-black bg-blue border border-gray-200 rounded-lg">
 
                 <select
                     value={type}
@@ -169,7 +175,7 @@ export default function Home() {
             {/* Circle */}
             <div className="relative w-80 h-80 rounded-full border-4 border-blue-400 flex items-center justify-center">
                 <div
-                    className="absolute w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[40px] border-t-red-500"
+                    className="absolute w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[40px] border-t-red-100"
                     style={{ transform: "translateY(-60px)" }}
                 ></div>
 
@@ -196,7 +202,7 @@ export default function Home() {
                             key={i}
                             className="absolute text-sm font-medium text-gray-700 text-center"
                             style={{
-                                transform: `translate(${x}px, ${y}px) rotate(${angleDeg}deg)`,
+                                transform: `translate(${x}px, ${0}px) rotate(${angleDeg}deg)`,
                             }}
                         >
                             <div>Player {i + 1}</div>

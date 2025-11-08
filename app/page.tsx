@@ -7,10 +7,17 @@ export default function Home() {
   const router = useRouter();
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const gameTypes = ["Truth or Dare", "Dare Only", "Truth only"];
+  type GameType = "Truth or Dare" | "Dare Only" | "Truth only";
+
+  const gameTypesVale: Record<GameType, string> = {
+    "Truth or Dare": "tord",
+    "Dare Only": "dare",
+    "Truth only": "truth",
+  };
 
   useEffect(() => {
     const sessionId = createOrGetSession();
-    console.log("Session ID:", sessionId);
+    // console.log("Session ID:", sessionId);
   }, []);
 
   const handlePlay = () => {
@@ -20,6 +27,19 @@ export default function Home() {
     }
     router.push(`/play?type=${encodeURIComponent(selectedGame)}`);
   };
+  const setSelectedGamefnc = (type: any) => {
+
+
+    if (typeof window !== "undefined") {
+
+
+      localStorage.setItem("gametype", gameTypesVale[type as GameType]);
+
+
+    }
+    setSelectedGame(gameTypesVale[type as GameType]);
+
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -31,8 +51,8 @@ export default function Home() {
         {gameTypes.map((type) => (
           <button
             key={type}
-            onClick={() => setSelectedGame(type)}
-            className={`px-6 py-3 rounded-lg border transition ${selectedGame === type
+            onClick={() => setSelectedGamefnc(type)}
+            className={`px-6 py-3 rounded-lg border transition ${selectedGame === gameTypesVale[type as GameType]
               ? "bg-blue-600 text-white border-blue-600"
               : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}

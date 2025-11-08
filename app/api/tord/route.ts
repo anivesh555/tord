@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     try {
         const { question, type, categories } = await req.json();
         await connectDB();
-        console.log(question, type, '==')
+        // console.log(question, type, '==')
 
         const newTord = await Tord.create({ question, type, category: categories });
         return NextResponse.json({ success: true, data: newTord });

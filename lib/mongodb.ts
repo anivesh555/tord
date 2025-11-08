@@ -10,7 +10,7 @@ export const connectDB = async (): Promise<void> => {
 
 
         isConnected = true;
-        console.log("✅ MongoDB connected:", conn.connection.host);
+        // console.log("✅ MongoDB connected:", conn.connection.host);
     } catch (error) {
         console.error("❌ MongoDB connection error:", error);
     }
