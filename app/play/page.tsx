@@ -5,7 +5,11 @@ import EditPlayers from "./EditPlayers";
 
 export default function Home() {
     const [players, setPlayers] = useState(() => {
-        const stored = localStorage.getItem('players');
+        // Run only in browser
+        let stored;
+        if (typeof window !== "undefined") {
+            stored = localStorage.getItem('players');
+        }
         return stored ? JSON.parse(stored) : [];
     });
 
@@ -38,20 +42,33 @@ export default function Home() {
     })();
 
     useEffect(() => {
-        const stored = localStorage.getItem("players");
+        // Run only in browser
+        let stored;
+        if (typeof window !== "undefined") {
+
+
+            stored = localStorage.getItem("players");
+        }
         if (stored) setPlayers(JSON.parse(stored));
     }, []);
 
     // ✅ Update localStorage whenever players change
     useEffect(() => {
-        localStorage.setItem("players", JSON.stringify(players));
+        // Run only in browser
+        if (typeof window !== "undefined") {
+
+            localStorage.setItem("players", JSON.stringify(players));
+        }
     }, [players]);
     console.log(players)
     const addName = () => {
         if (newName.trim() === "") return;
         const updated = [...players, { player: players.length + 1, name: newName.trim() }];
         setPlayers(updated);
-        localStorage.setItem('players', JSON.stringify(updated));
+        // Run only in browser
+        if (typeof window !== "undefined") {
+            localStorage.setItem('players', JSON.stringify(updated));
+        }
         setNewName("");
     };
 
