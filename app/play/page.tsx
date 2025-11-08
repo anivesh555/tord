@@ -157,7 +157,7 @@ export default function Home() {
                 ></div>
 
                 {/* Lines */}
-                {players.map((_, i) => {
+                {players.map((_: any, i: any) => {
                     const angleDeg = (i / players.length) * 360;
                     return (
                         <div
