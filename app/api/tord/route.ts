@@ -27,8 +27,12 @@ export async function GET(req: Request) {
         //  need to have in redis
         const { searchParams } = new URL(req.url);
         const query = searchParams.get("type");
+        const level = searchParams.get("level");
+        console.log(query, level, "qllevele")
         if (query) filter.type = query
-        const allTords = await Tord.find(filter).select(["questionId", 'type']);
+        if (level) filter.category = level;
+
+        const allTords = await Tord.find(filter).select(["questionId", 'type', 'category']);
         let min = 0
         let max = allTords.length
         const randomIndex = Math.floor(Math.random() * max);

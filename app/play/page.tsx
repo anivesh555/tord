@@ -19,6 +19,8 @@ export default function Home() {
     const [spinning, setSpinning] = useState(false);
     const [result, setResult] = useState(null);
     const [type, setType] = useState("");
+    const [level, setLevel] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [question, setQuestion] = useState(null);
     const [questionType, setQuestionTpe] = useState(null);
@@ -110,13 +112,12 @@ export default function Home() {
             const index = Math.floor((players.length - normalizedAngle / segmentAngle) % players.length);
             const selected = players[index < 0 ? 0 : index];
             setResult(selected);
-            console.log(normalizedAngle, segmentAngle, "=====", selected)
             if (type == 'tord') setPopup(true)
         }, 4000);
 
         if (type != 'tord') {
             try {
-                const res = await fetch(`/api/tord?type=${type}`, {
+                const res = await fetch(`/api/tord?type=${type}&level=${level}`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
                 });
@@ -154,21 +155,37 @@ export default function Home() {
                 </button>
             </div>
 
-            <div className="mb-6 flex gap-3 text-black bg-blue border border-gray-200 rounded-lg">
-
+            <div className="mb-6 flex flex-col sm:flex-row gap-4 text-gray-800 bg-white border border-gray-300 rounded-xl shadow-sm p-4">
                 <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    style={{ padding: 8, width: "100%", marginBottom: 10 }}
+                    className="w-full sm:w-1/2 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 transition"
                 >
                     <option value="">Select Game Type</option>
-
                     <option value="tord">Truth and Dare</option>
                     <option value="truth">Truths Only</option>
                     <option value="dare">Dare Only</option>
+                </select>
 
+                <select
+                    value={level}
+                    onChange={(e) => setLevel(e.target.value)}
+                    className="w-full sm:w-1/2 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 transition"
+                >
+                    <option value="">Select Question Level</option>
+                    <option value="normal">Normal</option>
+                    <option value="couple">Couple</option>
+                    <option value="extreme">Extreme</option>
+                    <option value="superExtreme">Super Extreme</option>
+                    <option value="naughty">Naughty</option>
                 </select>
             </div>
+
+
+            {/* <div className="mb-6 flex gap-3 text-black bg-blue border border-gray-200 rounded-lg">
+
+               
+            </div> */}
 
 
             <div className="relative w-80 h-80 rounded-full border-4 border-blue-400 flex items-center justify-center">
