@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import TordPopup from "./TordPopup";
 import EditPlayers from "./EditPlayers";
 
@@ -125,11 +126,9 @@ export default function Home() {
 
 
                 const data = await res.json();
-                console.log(data, "=======data")
-                setTimeout(() => {
-                    setQuestion(data.data[0].question)
-                    setQuestionTpe(data.data[0].type)
-                }, 2000)
+                // console.log(data, "=======data")
+                setQuestion(data.data[0].question)
+                setQuestionTpe(data.data[0].type)
 
 
             } catch (err) {
@@ -172,66 +171,94 @@ export default function Home() {
             </div>
 
 
-            {/* Circle */}
             <div className="relative w-80 h-80 rounded-full border-4 border-blue-400 flex items-center justify-center">
+                {/* Arrow */}
                 <div
                     className="absolute w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[40px] border-t-red-100"
                     style={{ transform: "translateY(-60px)" }}
                 ></div>
 
-                {/* Lines */}
-                {players.map((_: any, i: any) => {
-                    const angleDeg = (i / players.length) * 360;
-                    return (
-                        <div
-                            key={`line-${i}`}
-                            className="absolute w-[1px] h-40 bg-gray-300 origin-center"
-                            style={{ transform: `rotate(${angleDeg}deg) translateY(-80px)` }}
-                        ></div>
-                    );
-                })}
+                {/* Player Slices */}
+                {players.length % 2 === 0 ? (
+                    players.map((p: any, i: any) => {
+                        // Calculate angles for slices
+                        const offset = -90;
+                        const angleStart = (i / players.length) * 360 + offset;
+                        const angleEnd = ((i + 1) / players.length) * 360 + offset;
+                        const angleMid = (angleStart + angleEnd) / 2;
+                        const angleRad = (angleMid * Math.PI) / 180;
 
-                {/* Names */}
-                {/* {players.map((p: any, i: any) => {
-                    const angleDeg = (i / players.length) * 360;
-                    const radius = 120;
-                    const x = radius * Math.cos((angleDeg * Math.PI) / 180);
-                    const y = radius * Math.sin((angleDeg * Math.PI) / 180);
-                    return (
-                        <div
-                            key={i}
-                            className="absolute text-sm font-medium text-gray-700 text-center"
-                            style={{
-                                transform: `translate(${x}px, ${0}px) rotate(${angleDeg}deg)`,
-                            }}
-                        >
-                            <div>Player {i + 1}</div>
-                            <div>{p.name}</div>
-                        </div>
-                    );
-                })} */}
-                {players.map((p: any, i: number) => {
-                    const angleDeg = (i / players.length) * 360;
-                    const radius = 120; // slightly outside the line
-                    const x = radius * Math.cos((angleDeg * Math.PI) / 180);
-                    const y = radius * Math.sin((angleDeg * Math.PI) / 180);
+                        // Calculate player name position
+                        const radius = 100;
+                        const x = radius * Math.sin(angleRad);
+                        const y = -radius * Math.cos(angleRad);
 
-                    return (
-                        <div
-                            key={i}
-                            className="absolute text-sm font-medium text-gray-700 text-left"
-                            style={{
-                                left: `calc(50% + ${x}px)`,
-                                top: `calc(50% + ${y}px)`,
-                                transform: `translate(-50%, -50%)`,
-                            }}
-                        >
-                            {/* <div>Player {i + 1}</div> */}
-                            <div>{p.name}</div>
-                        </div>
-                    );
-                })}
+                        return (
+                            <React.Fragment key={i}>
+                                {/* Slice border lines */}
+                                <div
+                                    className="absolute w-[2px] h-40 bg-gray-300"
+                                    style={{
+                                        left: '50%',
+                                        top: '50%',
+                                        transformOrigin: 'top center',
+                                        transform: `rotate(${angleStart}deg)`,
+                                    }}
+                                />
 
+                                {/* Player name in the middle of their slice */}
+                                <div
+                                    className="absolute text-sm font-medium text-gray-700"
+                                    style={{
+                                        left: `calc(50% + ${x}px)`,
+                                        top: `calc(50% + ${y}px)`,
+                                        transform: 'translate(-50%, -50%)',
+                                    }}
+                                >
+                                    <div>{p.name}</div>
+                                </div>
+                            </React.Fragment>
+                        );
+                    })
+                ) : (
+                    <>
+                        {/* Player Slice Borders for Odd Players */}
+                        {players.map((_: any, i: any) => {
+                            const angleDeg = (i / players.length) * 360;
+                            return (
+                                <div
+                                    key={`line-${i}`}
+                                    className="absolute w-[1px] h-40 bg-gray-300 origin-center"
+                                    style={{ transform: `rotate(${angleDeg}deg) translateY(-80px)` }}
+                                ></div>
+                            );
+                        })}
+
+                        {/* Player Names for Odd Players */}
+                        {players.map((p: any, i: any) => {
+                            const angleDeg = (i / players.length) * 360;
+                            const radius = 120; // slightly outside the line
+                            const x = radius * Math.cos((angleDeg * Math.PI) / 180);
+                            const y = radius * Math.sin((angleDeg * Math.PI) / 180);
+
+                            return (
+                                <div
+                                    key={`name-${i}`}
+                                    className="absolute text-sm font-medium text-gray-700 text-left"
+                                    style={{
+                                        left: `calc(50% + ${x}px)`,
+                                        top: `calc(50% + ${y}px)`,
+                                        transform: 'translate(-50%, -50%)',
+                                    }}
+                                >
+                                    <div>{p.name}</div>
+                                </div>
+                            );
+                        })}
+                    </>
+                )}
+
+                {/* Bottle */}
                 <div
                     className="absolute flex flex-col items-center origin-center"
                     style={{
@@ -240,13 +267,12 @@ export default function Home() {
                     }}
                     onClick={spinBottle}
                 >
-                    {/* Bottle neck */}
+                    {/* Bottle Neck */}
                     <div className="w-1 h-5 bg-green-700 rounded-t-md"></div>
 
-                    {/* Bottle body */}
+                    {/* Bottle Body */}
                     <div className="w-6 h-20 bg-gradient-to-b from-green-400 to-green-600 rounded-b-full"></div>
                 </div>
-
             </div>
 
 
